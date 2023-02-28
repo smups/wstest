@@ -69,7 +69,7 @@ fn open_cube(path: &std::path::Path) -> Option<nd::Array3<f64>> {
 fn save_output(path: &std::path::Path, data: &[(u8, Vec<usize>)]) {
     let mut writer = csv::WriterBuilder::new()
         .from_path(path)
-        .expect("could not create CSV writer");
+        .expect(&format!("could not create CSV writer at {path:?}"));
     data.into_iter().for_each(|(_water_level, lake_sizes)| {
       writer.write_record(lake_sizes.iter().map(|&x| format!("{x}"))).unwrap();
     });
