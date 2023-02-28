@@ -51,7 +51,7 @@ fn watershed(input_file: &std::path::Path, output_folder: &std::path::Path) {
         println!("Finished transform on slice {idx}...");
 
         //Save results to file
-        let path = &output_folder.join(&format!("/depth_{idx}.csv"));
+        let path = &output_folder.join(&format!("depth_{idx}.csv"));
         save_output(path, lakes);
     });
 }
