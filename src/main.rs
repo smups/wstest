@@ -6,21 +6,40 @@ extern crate rustronomy_watershed as rws;
 use ndarray::parallel::prelude::*;
 use rws::prelude::*;
 
-const PATH: &str = "/net/vdesk/data2/wolters/FIRGGsims/";
+const ROOT_PATH: &str = "/net/vdesk/data2/wolters/FIRGGsims/";
 
 fn main() {
     println!("Starting watershed transform of FIRGG simulations...");
 
     //Get le data
-    let root = std::path::Path::new(PATH)
+    let root = std::path::Path::new(ROOT_PATH)
         .canonicalize()
-        .expect(&format!("could not canonicalize path \"{PATH:?}\""));
-    let data = open_cube(&root.join("LS_00041_allPPVres1.5.fits")).unwrap();
+        .expect(&format!("could not canonicalize path \"{ROOT_PATH:?}\""));
+
+    watershed(
+        &root.join("LS_00041_allPPVres1.5.fits"),
+        &root.join("PPV")
+    );
+
+    watershed(
+        &root.join("LS_00041_dens.fits"),
+        &root.join("PPP")
+    );
+}
+
+fn watershed(input_file: &std::path::Path, output_folder: &std::path::Path) {
+    //Get le data
+    let data = open_cube(input_file).unwrap();
 
     //Run pre-processor
     let ws = rws::TransformBuilder::new_merging().build().unwrap();
     let cube = ws.pre_processor(data.view());
     drop(data); //dealloc old cube
+
+    //Check that output folder exists
+    if !output_folder.exists() {
+        std::fs::create_dir(output_folder).expect("could not create output folder")
+    }
 
     //Do watershed
     cube.axis_iter(nd::Axis(2)).into_par_iter().enumerate().for_each(|(idx, slice)| {
@@ -30,7 +49,7 @@ fn main() {
         println!("Finished transform on slice {idx}...");
 
         //Save results to file
-        let path = &root.join(&format!("depth_{idx}.csv"));
+        let path = &output_folder.join(&format!("/depth_{idx}.csv"));
         save_output(path, lakes);
     });
 }
