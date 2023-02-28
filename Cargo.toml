@@ -9,3 +9,4 @@ edition = "2021"
 rustronomy-fits = "0.2"
 rustronomy-watershed = {version = "0.3.2", features = ["jemalloc", "plots"] }
 ndarray = {version="0.15", features=["rayon"]}
+csv = "1"
