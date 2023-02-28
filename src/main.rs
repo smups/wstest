@@ -38,7 +38,9 @@ fn watershed(input_file: &std::path::Path, output_folder: &std::path::Path) {
 
     //Check that output folder exists
     if !output_folder.exists() {
-        std::fs::create_dir(output_folder).expect("could not create output folder")
+        std::fs::create_dir(output_folder).expect(&format!(
+            "could not create output folder {output_folder:?}"
+        ))
     }
 
     //Do watershed
