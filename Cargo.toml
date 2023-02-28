@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 rustronomy-fits = "0.2"
 rustronomy-watershed = {version = "0.3.2", features = ["jemalloc", "plots"] }
-ndarray = "0.15"
+ndarray = {version="0.15", features=["rayon"]}
