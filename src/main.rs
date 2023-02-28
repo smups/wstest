@@ -17,13 +17,13 @@ fn main() {
         .expect(&format!("could not canonicalize path \"{ROOT_PATH:?}\""));
 
     watershed(
-        &root.join("LS_00041_allPPVres1.5.fits"),
-        &root.join("/PPV/")
+        &root.join("LS_00041_allPPVres1.5.fits").canonicalize().unwrap(),
+        &root.join("/PPV/").canonicalize().unwrap()
     );
 
     watershed(
-        &root.join("LS_00041_dens.fits"),
-        &root.join("/PPP/")
+        &root.join("LS_00041_dens.fits").canonicalize().unwrap(),
+        &root.join("/PPP/").canonicalize().unwrap()
     );
 }
 
