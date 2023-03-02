@@ -32,8 +32,10 @@ fn watershed(input_file: &std::path::Path, output_folder: &std::path::Path) {
     let data = open_cube(input_file).unwrap();
 
     //Run pre-processor
-    let ws = rws::TransformBuilder::new_merging().build().unwrap();
-    let cube = ws.pre_processor(data.view());
+    let cube = rws::TransformBuilder::new_merging()
+        .build()
+        .unwrap()
+        .pre_processor(data.view());
     drop(data); //dealloc old cube
 
     //Check that output folder exists
@@ -45,6 +47,11 @@ fn watershed(input_file: &std::path::Path, output_folder: &std::path::Path) {
 
     //Do watershed
     cube.axis_iter(nd::Axis(2)).into_par_iter().enumerate().for_each(|(idx, slice)| {
+        //Make new transform instance to save imgs
+        let ws = rws::TransformBuilder::new_merging()
+            .set_plot_folder(&output_folder.join(&format!("depth_{idx}/")))
+            .build()
+            .unwrap();
         println!("Started transform on slice {idx}...");
         let mins = &ws.find_local_minima(slice.view());
         let lakes = &ws.transform_to_list(slice, mins);
