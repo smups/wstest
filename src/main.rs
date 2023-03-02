@@ -50,7 +50,7 @@ fn watershed(input_file: &std::path::Path, output_folder: &std::path::Path) {
         //Make sure the plotting folder exists...
         let plot_folder = &output_folder.join(&format!("depth_{idx}/"));
         if !plot_folder.exists() {
-            std::fs::create_dir(output_folder).expect(&format!(
+            std::fs::create_dir(plot_folder).expect(&format!(
                 "could not create plotting folder {output_folder:?}"
             ))
         }
