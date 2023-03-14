@@ -3,7 +3,7 @@ extern crate ndarray as nd;
 extern crate rustronomy_fits as rsf;
 extern crate rustronomy_watershed as rws;
 
-use ndarray::parallel::prelude::*;
+use nd::parallel::prelude::*;
 use rws::prelude::*;
 
 const ROOT_PATH: &str = "/net/vdesk/data2/wolters/FIRGGsims/";
